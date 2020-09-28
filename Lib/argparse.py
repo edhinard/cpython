@@ -1250,9 +1250,15 @@ class FileType(object):
         # the special argument "-" means sys.std{in,out}
         if string == '-':
             if 'r' in self._mode:
-                return _sys.stdin
+                if 'b' in self._mode:
+                    return _sys.stdin.buffer
+                else:
+                    return _sys.stdin
             elif 'w' in self._mode:
-                return _sys.stdout
+                if 'b' in self._mode:
+                    return _sys.stdout.buffer
+                else:
+                    return _sys.stdout
             else:
                 msg = _('argument "-" with mode %r') % self._mode
                 raise ValueError(msg)
